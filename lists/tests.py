@@ -1,4 +1,5 @@
 from django.test import TestCase
+from lists.models import Item
 
 # Create your tests here.
 class HomePageTest(TestCase):
