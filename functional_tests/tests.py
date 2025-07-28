@@ -81,11 +81,11 @@ class NewVisitorTest(LiveServerTestCase):
 
         ## We delete all the browser's cookies
         ## as a way of simulating a brand new user session      
-        self.browser.delete_all_cookie()
+        self.browser.delete_all_cookies()
 
         # Francis visits the home page. There is no sign of Edith's list
         self.browser.get(self.live_server_url)
-        page_text = self.browser.find_element(By.TAG_NAMW, "id_new_item").text
+        page_text = self.browser.find_element(By.TAG_NAME, "body").text
         self.assertNotIn("Buy peacock feathers", page_text)
         self.assertNotIn("make a fly", page_text)
 
