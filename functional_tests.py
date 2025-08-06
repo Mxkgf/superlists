@@ -22,7 +22,7 @@ class NewVistorTest(unittest.TestCase):
         self.assertIn("To-Do", header_text)
 
         # 应用邀请她输入一个待办事项
-        inputbox = self.browser.find_elements_by_id("id_new_item")
+        inputbox = self.browser.find_element_by_id("id_new_item")
         self.assertEqual(
             inputbox.get_attribute("placeholder"),
             "Enter a to-do item"
@@ -34,7 +34,7 @@ class NewVistorTest(unittest.TestCase):
 
         # 她按回车键后，页面更新了
         # 待办事项表格中显示了“1: Buy peacock feathers”
-        inputbox.send_keys(Keys.Enter)
+        inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
         table = self.browser.find_element_by_id("id_list_table")
