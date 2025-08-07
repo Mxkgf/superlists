@@ -1,6 +1,5 @@
 from django.shortcuts import redirect, render
 from lists.models import Item
-from venv import create
 
 # Create your views here.
 def home_page(request):
