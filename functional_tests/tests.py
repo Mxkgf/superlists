@@ -113,8 +113,8 @@ class NewVistorTest(LiveServerTestCase):
         self.assertNotEqual(francis_list_url, edith_list_url)
 
         # 这个页面还是没有伊迪丝的清单
-        page_text = self.browser.find_element(By.TAG_NAME, "body")
-        self.assertNotIn("Buy peacock feathers", page_text)
-        self.assertIn("Buy milk", page_text)
+        page_text = self.browser.find_element(By.TAG_NAME, "body").text
+        self.assertNotIn("1: Buy peacock feathers", page_text)
+        self.assertIn("1: Buy milk", page_text)
 
         # 两个人都很满意，然后去睡觉了
