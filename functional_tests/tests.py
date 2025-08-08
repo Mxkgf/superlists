@@ -66,12 +66,6 @@ class NewVistorTest(LiveServerTestCase):
         self.wait_for_row_in_list_table("2: Use peacock feathers to make a fly")
         self.wait_for_row_in_list_table( "1: Buy peacock feathers")
 
-        # 伊迪丝想知道这个网站是否会记住她的清单
-        # 她看到网站为她生成了一个唯一的URL
-        # 而且页面中有一些文字解说这个功s
-
-        # 她访问那个URL，发现她的待办事项列表还在
-
         # 她很满意，去睡觉了
 
     def test_multiple_users_can_start_lists_at_different_urls(self):
@@ -118,3 +112,27 @@ class NewVistorTest(LiveServerTestCase):
         self.assertIn("1: Buy milk", page_text)
 
         # 两个人都很满意，然后去睡觉了
+
+    def test_layout_and_styling(self):
+        # 伊迪丝访问首页
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        # 她看到输入框完美的居中显示
+        inputbox = self.browser.find_element(By.ID, "id_new_item")
+        self.assertAlmostEqual(
+            inputbox.location["x"] + inputbox.size["width"] / 2,
+            512,
+            delta=10
+        )
+
+        # 她新建了一个清单，看到输入框仍完美的居中显示
+        inputbox.send_keys("testing")
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table("1: testing")
+        inputbox = self.browser.find_element(By.ID, "id_new_item")
+        self.assertAlmostEqual(
+            inputbox.location["x"] + inputbox.size["width"] / 2,
+            512,
+            delta=10
+        )
