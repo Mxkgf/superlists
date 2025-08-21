@@ -3,8 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-MAX_WAIT = 10
-
 class NewVistorTest(FunctionalTest):
 
     def test_can_start_a_list_for_one_user(self):
