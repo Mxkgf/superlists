@@ -2,6 +2,7 @@ from django.utils.html import escape
 from lists.models import Item, List
 from lists.forms import EMPTY_ITEM_ERROR, ItemForm
 from django.test import TestCase
+from unittest import skip
 
 # Create your tests here.
 class HomePageTest(TestCase):
@@ -91,6 +92,19 @@ class ListViewTest(TestCase):
     def test_for_invalid_input_shows_error_on_page(self):
         response = self.post_invalid_input()
         self.assertContains(response, escape(EMPTY_ITEM_ERROR))
+
+    @skip(reason="tmp")
+    def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
+        list_ = List.objects.create()
+        item1 = Item.objects.create(list=list_, text="textey")
+        response = self.client.post(
+            f"/lists/{list_.id}/",
+            data={"text": "textey"}
+        )
+        expected_error = escape("You've already got this in your list")
+        self.assertContains(response, expected_error)
+        self.assertTemplateUsed(response, "list.html")
+        self.assertEqual(Item.objects.count(), 1)
 
 
 class NewListTest(TestCase):
