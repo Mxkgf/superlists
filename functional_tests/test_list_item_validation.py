@@ -2,6 +2,7 @@ from .base import FunctionalTest, MAX_WAIT, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
+from webbrowser import get
 
 class ItemValidationTest(FunctionalTest):
 
@@ -71,8 +72,35 @@ class ItemValidationTest(FunctionalTest):
 
         # 她看到一条有帮助的错误信息
         self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element(By.CSS_SELECTOR, ".has-error").text,
+            self.get_error_element().text,
             "You've already got this in your list"
+        ))
+
+    def test_error_messages_are_cleared_on_input(self):
+        # 伊迪丝新建一个清单，但方法不当，所以出现了一个验证错误
+        self.browser.get(self.live_server_url)
+        self.get_item_input_box().send_keys(
+            "Banter too thick"
+        )
+        self.get_item_input_box().send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table(
+            "1: Banter too thick"
+        )
+        self.get_item_input_box().send_keys(
+            "Banter too thick"
+        )
+        self.get_item_input_box().send_keys(Keys.ENTER)
+
+        self.wait_for(lambda: self.assertTrue(
+            self.get_item_input_box().is_displayed()
+        ))
+
+        # 为了消除错误，她开始在输入框中输入内容
+        self.get_item_input_box().send_keys("a")
+
+        # 她看到错误消息消失了，她很高兴
+        self.wait_for(lambda: self.assertFalse(
+            self.get_error_element().is_displayed()
         ))
 
     def wait_for(self, fn):
@@ -84,3 +112,6 @@ class ItemValidationTest(FunctionalTest):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
+
+    def get_error_element(self):
+        return self.browser.find_element(By.CSS_SELECTOR, ".has-error")
