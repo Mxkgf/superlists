@@ -2,7 +2,6 @@ from .base import FunctionalTest, MAX_WAIT, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-from webbrowser import get
 
 class ItemValidationTest(FunctionalTest):
 
@@ -92,7 +91,7 @@ class ItemValidationTest(FunctionalTest):
         self.get_item_input_box().send_keys(Keys.ENTER)
 
         self.wait_for(lambda: self.assertTrue(
-            self.get_item_input_box().is_displayed()
+            self.get_error_element().is_displayed()
         ))
 
         # 为了消除错误，她开始在输入框中输入内容
