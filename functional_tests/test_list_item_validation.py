@@ -1,6 +1,7 @@
 from .base import FunctionalTest, MAX_WAIT, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from .base import FunctionalTest
 import time
 
 class ItemValidationTest(FunctionalTest):
@@ -101,16 +102,6 @@ class ItemValidationTest(FunctionalTest):
         self.wait_for(lambda: self.assertFalse(
             self.get_error_element().is_displayed()
         ))
-
-    def wait_for(self, fn):
-        start_time = time.time()
-        while True:
-            try:
-                return fn()
-            except (AssertionError, WebDriverException) as e:
-                if time.time() - start_time > MAX_WAIT:
-                    raise e
-                time.sleep(0.5)
 
     def get_error_element(self):
         return self.browser.find_element(By.CSS_SELECTOR, ".has-error")
